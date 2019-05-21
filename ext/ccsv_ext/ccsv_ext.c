@@ -5,13 +5,16 @@ static VALUE rb_cC;
 
 /* Ccsv.parse_line(string ,delimiter) */
 
-#define MAX_INTERVALS 1024
-
 static VALUE parse_line(VALUE self, VALUE str, VALUE delimiter) {
   char *line = RSTRING_PTR(str);
   char *delim = RSTRING_PTR(delimiter);
   int len = RSTRING_LEN(str);
-  char token[MAX_INTERVALS * 5];
+  char *token = (char *) malloc(len + 1);
+  VALUE ary = rb_ary_new();
+
+  /* if token == NULL - exit */
+  if (token == NULL)
+    return ary;
 
   /* chomp! */
   if(line[len] == EOL){
@@ -20,10 +23,9 @@ static VALUE parse_line(VALUE self, VALUE str, VALUE delimiter) {
     line[len] = '\0';
   }
 
-  VALUE ary = rb_ary_new();
-
   /* skip empty line */
   if (len < 2) {
+    free(token);
     return ary;
   }
 
@@ -59,6 +61,7 @@ static VALUE parse_line(VALUE self, VALUE str, VALUE delimiter) {
   else if (line[i - 1] != EOL)
     rb_ary_push(ary, rb_enc_str_new(&token[0], strlen(&token[0]), rb_utf8_encoding()));
 
+  free(token);
   rb_ary_dup(ary);
 }
 
