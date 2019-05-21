@@ -22,7 +22,16 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+CcsvExt.parse_line('1;2;3;4;5', ';')
+=> ["1", "2", "3", "4", "5"]
+
+CcsvExt.parse_line('"1;2;3;4;5";6', ';')
+=> ["1;2;3;4;5", "6"]
+
+CcsvExt.parse_line('"1;2;3;4;5";6;"""7"""', ';')
+=> ["1;2;3;4;5", "6", "\"7\""]
+```
 
 ## Development
 
