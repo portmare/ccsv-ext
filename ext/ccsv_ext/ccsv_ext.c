@@ -39,7 +39,7 @@ static VALUE parse_line(VALUE self, VALUE str, VALUE delimiter) {
       token[pos - 1] = 0;
       rb_ary_push(ary, rb_enc_str_new(&token[0], strlen(&token[0]), rb_utf8_encoding()));
       pos = 0;
-      memset(token, 0, sizeof(token));
+      memset(token, 0, strlen(token));
     }
     if (line[i] == QUOTE && line[i + 1] != QUOTE) {
       pos--;
